@@ -30,10 +30,10 @@ config :block_scout_web, BlockScoutWeb.Endpoint,
 config :block_scout_web, BlockScoutWeb.Gettext, locales: ~w(en), default_locale: "en"
 
 config :block_scout_web, BlockScoutWeb.SocialMedia,
-  twitter: "PoaNetwork",
-  telegram: "oraclesnetwork",
-  facebook: "PoaNetwork",
-  instagram: "PoaNetwork"
+  twitter: "artis_eco",
+  telegram: "JEYz2EsBddOZr1pXVkpK8g",
+  facebook: "artis.eco",
+  instagram: ""
 
 config :ex_cldr,
   default_locale: "en",
