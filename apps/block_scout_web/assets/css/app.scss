@@ -83,6 +83,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "components/loading-spinner";
 @import "components/transaction-input";
 
+@import "components/deactivate_coinmarket";
+
 :export {
   primary: $primary;
   secondary: $secondary;
