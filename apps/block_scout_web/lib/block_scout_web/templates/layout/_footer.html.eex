@@ -10,7 +10,7 @@
       <a href="https://www.twitter.com/artis_eco/" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="<%= gettext("Twitter") %>">
         <i class="fab fa-twitter"></i>
       </a>
-      <a href="http://t.me/JEYz2EsBddOZr1pXVkpK8g" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="<%= gettext("Telegram") %>">
+      <a href="https://t.me/joinchat/JEYz2EsBddOZr1pXVkpK8g" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="<%= gettext("Telegram") %>">
         <i class="fab fa-telegram-plane"></i>
       </a>
     </div>
