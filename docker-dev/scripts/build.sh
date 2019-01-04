@@ -1,6 +1,11 @@
 #/bin/sh
+
+cd src
+
 #updating dependencies
 mix do deps.get, deps.compile
+
+
 mix compile
 
 cd apps/block_scout_web/assets/
