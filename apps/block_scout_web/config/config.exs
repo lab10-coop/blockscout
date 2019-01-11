@@ -14,17 +14,23 @@ config :block_scout_web, BlockScoutWeb.Chain,
   network: System.get_env("NETWORK"),
   subnetwork: System.get_env("SUBNETWORK"),
   network_icon: System.get_env("NETWORK_ICON"),
-  logo: System.get_env("LOGO")
+  logo: System.get_env("LOGO"),
+  has_emission_funds: false
 
 # Configures the endpoint
 config :block_scout_web, BlockScoutWeb.Endpoint,
-  instrumenters: [BlockScoutWeb.Prometheus.Instrumenter],
+  instrumenters: [BlockScoutWeb.Prometheus.Instrumenter, SpandexPhoenix.Instrumenter],
   url: [
     host: "localhost",
     path: System.get_env("NETWORK_PATH") || "/"
   ],
   render_errors: [view: BlockScoutWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: BlockScoutWeb.PubSub, adapter: Phoenix.PubSub.PG2]
+
+config :block_scout_web, BlockScoutWeb.Tracer,
+  service: :block_scout_web,
+  adapter: SpandexDatadog.Adapter,
+  trace_key: :blockscout
 
 # Configures gettext
 config :block_scout_web, BlockScoutWeb.Gettext, locales: ~w(en), default_locale: "en"
@@ -42,14 +48,20 @@ config :ex_cldr,
 
 config :logger, :block_scout_web,
   # keep synced with `config/config.exs`
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:application, :request_id],
+  format: "$dateT$time $metadata[$level] $message\n",
+  metadata:
+    ~w(application fetcher request_id first_block_number last_block_number missing_block_range_count missing_block_count
+       block_number step count error_count shrunk import_id transaction_id)a,
   metadata_filter: [application: :block_scout_web]
+
+config :spandex_phoenix, tracer: BlockScoutWeb.Tracer
 
 config :wobserver,
   # return only the local node
   discovery: :none,
   mode: :plug
+
+config :block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter, enabled: true
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
