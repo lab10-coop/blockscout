@@ -46,7 +46,7 @@ defmodule Explorer.Validator.MetadataRetriever do
          _min_treshold
        ]) do
     %{
-      name: trim_null_bytes(first_name) <> " " <> trim_null_bytes(last_name),
+      name: full_address,
       metadata: %{
         license_id: trim_null_bytes(license_id),
         address: full_address,
