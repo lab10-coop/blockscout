@@ -34,8 +34,8 @@ defmodule Explorer.Validator.MetadataRetriever do
   end
 
   defp translate_metadata([
-         first_name,
-         last_name,
+         _first_name,
+         _last_name,
          license_id,
          full_address,
          state,
