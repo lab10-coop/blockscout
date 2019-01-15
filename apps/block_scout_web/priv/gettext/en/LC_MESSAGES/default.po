@@ -41,7 +41,7 @@ msgstr ""
 #, elixir-format
 #: lib/block_scout_web/templates/chain/_metatags.html.eex:2
 msgid "%{subnetwork} %{network} Explorer"
-msgstr ""
+msgstr "%{subnetwork} Explorer"
 
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_default_title.html.eex:2
