@@ -337,7 +337,7 @@ msgstr ""
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_footer.html.eex:18
 msgid "Copyright %{year} POA"
-msgstr ""
+msgstr "Copyright 2018-2019 POA & lab10"
 
 #, elixir-format
 #: lib/block_scout_web/templates/address/overview.html.eex:50
