@@ -22,7 +22,7 @@ defmodule BlockScoutWeb.CSPHeader do
   end
 
   defp websocket_endpoints(conn) do
-    host = Conn.get_req_header(conn, "host")
+    host = "blockscout.sigma1.artis.network"
     "ws://#{host} wss://#{host}"
   end
 end
