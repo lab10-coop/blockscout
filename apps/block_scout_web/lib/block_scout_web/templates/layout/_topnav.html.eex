@@ -103,8 +103,8 @@
               <%= subnetwork_title() %>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="https://blockscout.sigma1.artis.network/"><%= gettext("ARTIS sigma1") %></a>
-              <a class="dropdown-item" href="http://blockscout.tau1.artis.network/"><%= gettext("ARTIS tau1") %></a>
+              <a class="dropdown-item" href="https://explorer.sigma1.artis.network/"><%= gettext("ARTIS sigma1") %></a>
+              <a class="dropdown-item" href="https://explorer.tau1.artis.network/"><%= gettext("ARTIS tau1") %></a>
             </div>
           </li>
         </ul>
