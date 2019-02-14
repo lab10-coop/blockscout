@@ -21,7 +21,7 @@ defmodule BlockScoutWeb.CSPHeader do
   end
 
   defp websocket_endpoints() do
-    host = "blockscout.tau1.artis.network"
+    host = "explorer.tau1.artis.network"
     "ws://#{host} wss://#{host}"
   end
 end
