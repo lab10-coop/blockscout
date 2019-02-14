@@ -27,11 +27,11 @@ config :block_scout_web,
   other_networks: [
     %{
       title: "ARTIS sigma1",
-      url: "https://rpc.sigma1.artis.network"
+      url: "https://explorer.sigma1.artis.network"
     },
     %{
       title: "ARTIS tau1",
-      url: "https://rpc.tau1.artis.network",
+      url: "https://explorer.tau1.artis.network",
       test_net?: true
     }
   ]
