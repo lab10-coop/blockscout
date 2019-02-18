@@ -86,7 +86,6 @@
           </ul>
         </div>
       <% end %>
->>>>>>> dcca791ebfe9076d05a2a143012e8e2e78f9013d
     </div>
 
     <% version = version() %>
