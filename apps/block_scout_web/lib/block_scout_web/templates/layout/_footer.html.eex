@@ -36,16 +36,7 @@
     <% col_size = if Enum.empty?(other_explorers), do: 4, else: 3 %>
 
     <div class="row">
-      <div class="col-md-<%= col_size %> footer-list">
-        <h3>BlockScout</h3>
-        <hr>
-        <ul>
-          <li><a href="<%= issue_link(@conn) %>" rel="noreferrer" class="footer-link" target="_blank"><%= gettext("Submit an Issue") %></a></li>
-          <li><a href="https://github.com/poanetwork/blockscout" rel="noreferrer" class="footer-link"><%= gettext("Contribute") %></a></li>
-          <li><a href="https://gitter.im/poanetwork/blockscout" rel="noreferrer" class="footer-link"><%= gettext("Chat") %></a></li>
-          <li><a href="https://forum.poa.network/c/blockscout" rel="noreferrer" class="footer-link"><%= gettext("Support") %></a></li>
-        </ul>
-      </div>
+    
       <% main_nets = main_nets() %>
 
       <%= unless Enum.empty?(main_nets) do %>
