@@ -1,0 +1,31 @@
+version: '3'
+services:
+    db:
+        image: postgres:10.4
+        environment:
+            POSTGRES_PASSWORD: enviu_dev
+            POSTGRES_USER: postgres          
+    blockscout:
+        build: 
+            context: ..
+            dockerfile: docker-prod/Dockerfile
+        depends_on:
+            - db
+        links: 
+            - db
+        environment:
+            - COIN=ATS
+            - ETHEREUM_JSONRPC_VARIANT=parity
+            - ETHEREUM_JSONRPC_TRACE_URL=http://rpc-trace.sigma1.artis.network
+            - ETHEREUM_JSONRPC_HTTP_URL=http://rpc-trace.sigma1.artis.network
+            - ETHEREUM_JSONRPC_WS_URL=wss://ws.sigma1.artis.network
+            - NETWORK=246529 
+            - SUBNETWORK='ARTIS sigma1'
+            - LOGO='/images/artis_sigma_logo.svg'
+            - METADATA_CONTRACT=0x5e5a1f6ca522ee68ddbe45b51f2a7cceb32985ee
+            - VALIDATORS_CONTRACT=0xAAA0000000000000000000000000000000000AAA
+            - SECRET_KEY_BASE=P2VzPXkTa5NEYJ8hBZKBLaM32yTkbYpVVS7GWJKAZQRtvKqXJvwPx2FcUvUcRkTA
+            - DATABASE_URL=postgresql://postgres:enviu_dev@db:5432/postgres
+        ports:
+            - "4000:4000"
+        tty: true
