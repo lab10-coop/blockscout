@@ -16,7 +16,11 @@
     <meta name="msapplication-TileColor" content="#1a4b3c">
     <meta name="msapplication-config" content="<%= static_path(@conn, "/browserconfig.xml") %>">
     <meta name="theme-color" content="#1a4b3c">
-    
+
+    <link rel="stylesheet" href="https://nico-amsterdam.github.io/awesomplete-util/css/awesomplete.css">
+    <script src="https://nico-amsterdam.github.io/awesomplete-util/js/awesomplete.min.js"></script>
+    <script src="https://nico-amsterdam.github.io/awesomplete-util/js/awesomplete-util.min.js"></script>
+
     <%= render_existing(@view_module, "_metatags.html", assigns) || render("_default_title.html") %>
   </head>
 

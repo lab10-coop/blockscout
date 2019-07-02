@@ -1,6 +1,8 @@
 defmodule BlockScoutWeb.Router do
   use BlockScoutWeb, :router
 
+  alias BlockScoutWeb.Plug.GraphQL
+
   forward("/wobserver", Wobserver.Web.Router)
   forward("/admin", BlockScoutWeb.AdminRouter)
 
@@ -20,6 +22,9 @@ defmodule BlockScoutWeb.Router do
     pipe_through(:api)
 
     get("/supply", SupplyController, :supply)
+
+    resources("/decompiled_smart_contract", DecompiledSmartContractController, only: [:create])
+    resources("/verified_smart_contracts", VerifiedSmartContractController, only: [:create])
   end
 
   scope "/api", BlockScoutWeb.API.RPC do
@@ -49,7 +54,8 @@ defmodule BlockScoutWeb.Router do
 
   forward("/graphiql", Absinthe.Plug.GraphiQL,
     schema: BlockScoutWeb.Schema,
-    interface: :playground,
+    interface: :advanced,
+    default_query: GraphQL.default_query(),
     socket: BlockScoutWeb.UserSocket,
     analyze_complexity: true,
     max_complexity: @max_complexity
@@ -66,7 +72,10 @@ defmodule BlockScoutWeb.Router do
 
     resources("/", ChainController, only: [:show], singleton: true, as: :chain)
 
-    resources("/market_history_chart", Chain.MarketHistoryChartController, only: [:show], singleton: true)
+    resources("/market_history_chart", Chain.MarketHistoryChartController,
+      only: [:show],
+      singleton: true
+    )
 
     resources "/blocks", BlockController, only: [:index, :show], param: "hash_or_number" do
       resources("/transactions", BlockTransactionController, only: [:index], as: :transaction)
@@ -88,6 +97,13 @@ defmodule BlockScoutWeb.Router do
         TransactionInternalTransactionController,
         only: [:index],
         as: :internal_transaction
+      )
+
+      resources(
+        "/raw_trace",
+        TransactionRawTraceController,
+        only: [:index],
+        as: :raw_trace
       )
 
       resources("/logs", TransactionLogController, only: [:index], as: :log)
@@ -122,6 +138,20 @@ defmodule BlockScoutWeb.Router do
         AddressContractController,
         only: [:index],
         as: :contract
+      )
+
+      resources(
+        "/decompiled_contracts",
+        AddressDecompiledContractController,
+        only: [:index],
+        as: :decompiled_contract
+      )
+
+      resources(
+        "/logs",
+        AddressLogsController,
+        only: [:index],
+        as: :logs
       )
 
       resources(
@@ -207,6 +237,10 @@ defmodule BlockScoutWeb.Router do
     )
 
     get("/search", ChainController, :search)
+
+    get("/search_logs", AddressLogsController, :search_logs)
+
+    get("/token_autocomplete", ChainController, :token_autocomplete)
 
     get("/chain_blocks", ChainController, :chain_blocks, as: :chain_blocks)
 

@@ -9,11 +9,30 @@ use Mix.Config
 config :explorer,
   ecto_repos: [Explorer.Repo],
   coin: System.get_env("COIN") || "ATS",
-  token_functions_reader_max_retries: 3
+  token_functions_reader_max_retries: 3,
+  allowed_evm_versions:
+  System.get_env("ALLOWED_EVM_VERSIONS") ||
+    "homestead,tangerineWhistle,spuriousDragon,byzantium,constantinople,petersburg"
 
 config :explorer, Explorer.Counters.AverageBlockTime, enabled: true
 
-config :explorer, Explorer.Counters.AddressesWithBalanceCounter, enabled: true, enable_consolidation: true
+config :explorer, Explorer.Chain.BlockNumberCache, enabled: true
+
+config :explorer, Explorer.ExchangeRates.Source.CoinMarketCap,
+  pages: String.to_integer(System.get_env("COINMARKETCAP_PAGES") || "10")
+
+balances_update_interval =
+  if System.get_env("ADDRESS_WITH_BALANCES_UPDATE_INTERVAL") do
+    case Integer.parse(System.get_env("ADDRESS_WITH_BALANCES_UPDATE_INTERVAL")) do
+      {integer, ""} -> integer
+      _ -> nil
+    end
+  end
+
+config :explorer, Explorer.Counters.AddressesWithBalanceCounter,
+  enabled: true,
+  enable_consolidation: true,
+  update_interval_in_seconds: balances_update_interval || 30 * 60
 
 config :explorer, Explorer.ExchangeRates, enabled: true, store: :ets
 
@@ -38,6 +57,18 @@ if System.get_env("METADATA_CONTRACT") && System.get_env("VALIDATORS_CONTRACT") 
   config :explorer, Explorer.Validator.MetadataProcessor, enabled: true
 else
   config :explorer, Explorer.Validator.MetadataProcessor, enabled: false
+end
+
+config :explorer, Explorer.Staking.PoolsReader,
+  validators_contract_address: System.get_env("POS_VALIDATORS_CONTRACT"),
+  staking_contract_address: System.get_env("POS_STAKING_CONTRACT")
+
+if System.get_env("POS_STAKING_CONTRACT") do
+  config :explorer, Explorer.Staking.EpochCounter,
+    enabled: true,
+    staking_contract_address: System.get_env("POS_STAKING_CONTRACT")
+else
+  config :explorer, Explorer.Staking.EpochCounter, enabled: false
 end
 
 if System.get_env("SUPPLY_MODULE") == "TokenBridge" do

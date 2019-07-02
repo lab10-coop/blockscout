@@ -8,33 +8,27 @@ use Mix.Config
 # General application configuration
 config :block_scout_web,
   namespace: BlockScoutWeb,
-  ecto_repos: [Explorer.Repo]
+  ecto_repos: [Explorer.Repo],
+  version: System.get_env("BLOCKSCOUT_VERSION"),
+  release_link: System.get_env("RELEASE_LINK"),
+  decompiled_smart_contract_token: System.get_env("DECOMPILED_SMART_CONTRACT_TOKEN")
 
 config :block_scout_web, BlockScoutWeb.Chain,
   network: System.get_env("NETWORK"),
   subnetwork: System.get_env("SUBNETWORK"),
   network_icon: System.get_env("NETWORK_ICON"),
   logo: System.get_env("LOGO"),
+  logo_footer: System.get_env("LOGO_FOOTER"),
   has_emission_funds: false
 
 config :block_scout_web,
   link_to_other_explorers: System.get_env("LINK_TO_OTHER_EXPLORERS") == "true",
   other_explorers: %{
-    "Etherscan" => "https://etherscan.io/",
+    "Etherscan" => "https://etherscan.io/",has_emission_funds
     "EtherChain" => "https://www.etherchain.org/",
     "Bloxy" => "https://bloxy.info/"
   },
-  other_networks: [
-    %{
-      title: "ARTIS sigma1",
-      url: "https://explorer.sigma1.artis.network"
-    },
-    %{
-      title: "ARTIS tau1",
-      url: "https://explorer.tau1.artis.network",
-      test_net?: true
-    }
-  ]
+  other_networks: System.get_env("SUPPORTED_CHAINS")
 
 config :block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter, enabled: true
 

@@ -4,11 +4,13 @@
     <div class="row">
       <div class="col-md-4">
         <%= link to: chain_path(@conn, :show), class: "footer-brand" do %>
-          <img class="footer-logo" src="<%= logo() %>" alt="<%= subnetwork_title() %>" />
+          <img class="footer-logo" src="<%= logo_footer() %>" alt="<%= subnetwork_title() %>" />
         <% end %>
       </div>
-      <div class="col-md-5">
-      </div>
+    </div>
+
+    <% other_explorers = other_explorers() %>
+    <% col_size = if Enum.empty?(other_explorers), do: 3, else: 4 %>
 
       <div class="col-md-3">
         <div class="icon-links icon-links-primary footer-social-icons">
@@ -23,7 +25,6 @@
           </a>
         </div>
       </div>
-    </div>
 
     <div class="row footer-info">
       <div class="col-12">
@@ -42,7 +43,6 @@
       <%= unless Enum.empty?(main_nets) do %>
         <div class="col-md-<%= col_size %> footer-list">
           <h3><%= gettext("Main Networks") %></h3>
-          <hr>
           <ul>
             <%= for %{title: title, url: url} <- main_nets do %>
               <li><a href="<%= url%>" rel="norefferer" class="footer-link"> <%= title %> </a></li>
@@ -51,12 +51,11 @@
         </div>
       <% end %>
 
-      <% test_nets = test_nets() %>
+      <% test_nets = test_nets(other_networks()) %>
 
       <%= unless Enum.empty?(test_nets) do %>
         <div class="col-md-<%= col_size %> footer-list">
           <h3><%= gettext("Test Networks") %></h3>
-          <hr>
           <ul>
             <%= for %{title: title, url: url} <- test_nets do %>
               <li><a href="<%= url%>" rel="noreferrer" class="footer-link"> <%= title %> </a></li>
@@ -65,11 +64,9 @@
         </div>
       <% end %>
 
-
       <%= unless Enum.empty?(other_explorers) do %>
         <div class="col-md-<%= col_size %> footer-list">
           <h3><%= gettext("Other Explorers") %></h3>
-          <hr>
           <ul>
             <%= for {name, url} <- other_explorers do %>
               <li><a href="<%= url%>" rel="noreferrer" class="footer-link"> <%= name %> </a></li>
@@ -82,8 +79,9 @@
     <% version = version() %>
 
     <%= unless ignore_version?(version) do %>
+      <% release_link = release_link(version) %>
       <div>
-        <%= gettext("Version") %>: <%= version %>
+        <%= gettext("Version") %>: <%= release_link %>
       </div>
     <% end %>
   </div>
