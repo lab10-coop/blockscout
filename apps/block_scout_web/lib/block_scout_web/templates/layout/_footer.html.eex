@@ -12,8 +12,10 @@
     <% other_explorers = other_explorers() %>
     <% col_size = if Enum.empty?(other_explorers), do: 3, else: 2 %>
 
+    <div class="row">
       <div class="col-md-3">
-        <div class="icon-links icon-links-primary footer-social-icons">
+	<p class="footer-info-text"><%= gettext("Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.") %></p>
+        <div class="footer-social-icons">
           <a href="https://github.com/lab10-coop" rel="noreferrer" target="_blank" class="icon-link" data-toggle="tooltip" data-placement="top" title="<%= gettext("Github") %>">
             <i class="fab fa-github"></i>
           </a>
@@ -31,13 +33,6 @@
         <%= gettext("Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.") %>
       </div>
     </div>
-
-    <% other_explorers = other_explorers() %>
-
-    <% col_size = if Enum.empty?(other_explorers), do: 4, else: 3 %>
-
-    <div class="row">
-    
       <% main_nets = main_nets(other_networks()) %>
 
       <%= unless Enum.empty?(main_nets) do %>
