@@ -2110,11 +2110,14 @@ defmodule Explorer.ChainTest do
                  ])
              )
 
-      assert internal_transaction.transaction.block.number == block.number
+      assert internal_transaction.transaction.block_number == block.number
     end
 
     test "with transaction with internal transactions loads associations with in necessity_by_association" do
-      transaction = insert(:transaction)
+      transaction =
+        :transaction
+        |> insert()
+        |> with_block()
 
       insert(:internal_transaction_create,
         transaction: transaction,
@@ -2127,7 +2130,7 @@ defmodule Explorer.ChainTest do
                %InternalTransaction{
                  from_address: %Ecto.Association.NotLoaded{},
                  to_address: %Ecto.Association.NotLoaded{},
-                 transaction: %Transaction{}
+                 transaction: %Transaction{block: %Ecto.Association.NotLoaded{}}
                }
              ] = Chain.transaction_to_internal_transactions(transaction)
 
@@ -2135,15 +2138,15 @@ defmodule Explorer.ChainTest do
                %InternalTransaction{
                  from_address: %Address{},
                  to_address: nil,
-                 transaction: %Transaction{}
+                 transaction: %Transaction{block: %Block{}}
                }
              ] =
                Chain.transaction_to_internal_transactions(
                  transaction,
                  necessity_by_association: %{
-                   from_address: :optional,
-                   to_address: :optional,
-                   transaction: :optional
+                   :from_address => :optional,
+                   :to_address => :optional,
+                   [transaction: :block] => :optional
                  }
                )
     end
@@ -3430,6 +3433,17 @@ defmodule Explorer.ChainTest do
       token = build(:token)
       assert {:error, :not_found} = Chain.token_from_address_hash(token.contract_address.hash)
     end
+
+    test "with contract_address' smart_contract preloaded" do
+      smart_contract = build(:smart_contract)
+      address = insert(:address, smart_contract: smart_contract)
+      token = insert(:token, contract_address: address)
+
+      assert {:ok, result} =
+               Chain.token_from_address_hash(token.contract_address_hash, [{:contract_address, :smart_contract}])
+
+      assert smart_contract = result.contract_address.smart_contract
+    end
   end
 
   test "stream_uncataloged_token_contract_address_hashes/2 reduces with given reducer and accumulator" do
@@ -3932,6 +3946,55 @@ defmodule Explorer.ChainTest do
       found_creation_data = Chain.contract_creation_input_data(hash)
 
       assert found_creation_data == ""
+    end
+  end
+
+  describe "transaction_token_transfer_type/1" do
+    test "detects erc721 token transfer" do
+      from_address_hash = "0x7a30272c902563b712245696f0a81c5a0e45ddc8"
+      to_address_hash = "0xb544cead8b660aae9f2e37450f7be2ffbc501793"
+      from_address = insert(:address, hash: from_address_hash)
+      to_address = insert(:address, hash: to_address_hash)
+      block = insert(:block)
+
+      transaction =
+        insert(:transaction,
+          input:
+            "0x23b872dd0000000000000000000000007a30272c902563b712245696f0a81c5a0e45ddc8000000000000000000000000b544cead8b660aae9f2e37450f7be2ffbc5017930000000000000000000000000000000000000000000000000000000000000002",
+          value: Decimal.new(0),
+          created_contract_address_hash: nil
+        )
+        |> with_block(block, status: :ok)
+
+      insert(:token_transfer, from_address: from_address, to_address: to_address, transaction: transaction)
+
+      assert :erc721 = Chain.transaction_token_transfer_type(Repo.preload(transaction, token_transfers: :token))
+    end
+
+    test "detects erc20 token transfer" do
+      from_address_hash = "0x5881fdfE964bE26aC6C8e5153C4ad1c83181C024"
+      to_address_hash = "0xE113127804Ae2383f63Fe8cE31B212D5CB85113d"
+      from_address = insert(:address, hash: from_address_hash)
+      to_address = insert(:address, hash: to_address_hash)
+      block = insert(:block)
+
+      transaction =
+        insert(:transaction,
+          input:
+            "0xa9059cbb000000000000000000000000e113127804ae2383f63fe8ce31b212d5cb85113d0000000000000000000000000000000000000000000001b3093f45ba4dc40000",
+          value: Decimal.new(0),
+          created_contract_address_hash: nil
+        )
+        |> with_block(block, status: :ok)
+
+      insert(:token_transfer,
+        from_address: from_address,
+        to_address: to_address,
+        transaction: transaction,
+        amount: 8_025_000_000_000_000_000_000
+      )
+
+      assert :erc20 = Chain.transaction_token_transfer_type(Repo.preload(transaction, token_transfers: :token))
     end
   end
 
