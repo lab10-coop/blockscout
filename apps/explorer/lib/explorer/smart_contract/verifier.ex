@@ -70,10 +70,9 @@ defmodule Explorer.SmartContract.Verifier do
     blockchain_bytecode_without_whisper = extract_bytecode(blockchain_bytecode)
 
     if generated_bytecode != blockchain_bytecode_without_whisper  do
-      Logger.error(
-        "contract bytecode difference detected:  blockchain_bytecode_without_whisper ",
-        blockchain_bytecode_without_whisper: to_string(blockchain_bytecode_without_whisper),
-        generated_bytecode: to_string(generated_bytecode))
+      Logger.error("contract bytecode difference detected: ")
+      Logger.error(to_string(blockchain_bytecode_without_whisper))
+      Logger.error(to_string(generated_bytecode))
     end
 
     cond do
