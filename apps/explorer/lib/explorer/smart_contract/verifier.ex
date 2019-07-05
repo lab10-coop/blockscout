@@ -6,6 +6,7 @@ defmodule Explorer.SmartContract.Verifier do
   against the existing Creation Address Bytecode, if it matches the contract is
   then Verified.
   """
+  require Logger
 
   alias Explorer.Chain
   alias Explorer.SmartContract.Solidity.CodeCompiler
