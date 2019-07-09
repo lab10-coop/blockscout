@@ -84,7 +84,7 @@ $btn-qr-color: $primary; // btn qr-code
 $card-background-1: $primary;
 $card-tab-active: $primary;
 
-$dashboard-banner-network-stats-static-image: "/images/lukso_dashboard_image.png";
+//$dashboard-banner-network-stats-static-image: "/images/lukso_dashboard_image.png";
 
 // Custom home
 $dashboard-banner-network-plain-container-height: 150px;
@@ -127,6 +127,7 @@ $dashboard-banner-network-plain-container-height: 150px;
       height: 100%;
       justify-content: flex-start;
       width: 100%;
+      color: white;
 
       @include media-breakpoint-down(lg) {
         flex-wrap: wrap;
@@ -135,7 +136,7 @@ $dashboard-banner-network-plain-container-height: 150px;
 
       &::after {
         background-color: transparent;
-        background-image: url($dashboard-banner-network-stats-static-image);
+        //background-image: url($dashboard-banner-network-stats-static-image);
         background-position: 50% 50%;
         background-repeat: no-repeat;
         background-size: contain;
@@ -157,8 +158,7 @@ $dashboard-banner-network-plain-container-height: 150px;
 
       .dashboard-banner-network-stats-item {
         margin-right: 60px;
-        color: white;
-
+        
         @include media-breakpoint-down(lg) {
           flex-grow: 1;
           flex-shrink: 1;
