@@ -47,8 +47,8 @@ a.tile-title { color: $tertiary !important; }
 // footer
 $footer-background-color: $primary;
 $footer-title-color: #fff;
-$footer-text-color: $secondary;
-$footer-item-disc-color: $secondary;
+$footer-text-color: white;
+$footer-item-disc-color: white;
 $footer-social-icon-color: $secondary;
 
 .footer-logo {
@@ -92,6 +92,14 @@ $dashboard-banner-network-plain-container-height: 150px;
 .layout-container {
   .dashboard-banner-container::after {
     display: none;
+  }
+
+  .dashboard-banner-container {
+    background-image: linear-gradient(
+      to bottom,
+      $dashboard-banner-gradient-start,
+      $dashboard-banner-gradient-end
+    );
   }
 
   .dashboard-banner-network-graph {
@@ -149,6 +157,7 @@ $dashboard-banner-network-plain-container-height: 150px;
 
       .dashboard-banner-network-stats-item {
         margin-right: 60px;
+        color: white;
 
         @include media-breakpoint-down(lg) {
           flex-grow: 1;
