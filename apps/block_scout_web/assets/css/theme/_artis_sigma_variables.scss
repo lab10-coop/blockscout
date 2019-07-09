@@ -59,9 +59,9 @@ $footer-social-icon-color: $secondary;
 $dashboard-line-color-price: $tertiary; // price left border
 
 $dashboard-banner-chart-legend-label-color: $primary;
-$dashboard-stats-item-label-color: $primary;
+$dashboard-stats-item-label-color: white;
 $dashboard-banner-chart-legend-value-color: $primary; // chart labels
-$dashboard-stats-item-value-color: $primary; // stat values
+$dashboard-stats-item-value-color: white; // stat values
 
 $dashboard-stats-item-border-color: $primary; // stat border
 $dashboard-banner-gradient-start: $secondary; // gradient begin
@@ -158,7 +158,7 @@ $dashboard-banner-network-plain-container-height: 150px;
 
       .dashboard-banner-network-stats-item {
         margin-right: 60px;
-        
+
         @include media-breakpoint-down(lg) {
           flex-grow: 1;
           flex-shrink: 1;
