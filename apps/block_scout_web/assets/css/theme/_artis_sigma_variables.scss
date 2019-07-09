@@ -9,14 +9,14 @@
 
 // //artis pool
 
-//   $d1: #234006;
-//   $d2: #386a3c;
-//   $c1: #4d997b;
-//   $c2: #72c168;
-//   $c3: #e97b9c;
-//   $c4: #fcbfd1;
-//   $c5: #c3da9e;
-//   $c6: #9fd132;
+//    $d1: #234006;
+//    $d2: #386a3c;
+//    $c1: #4d997b;
+//    $c2: #72c168;
+//    $c3: #e97b9c;
+//    $c4: #fcbfd1;
+//    $c5: #c3da9e;
+//    $c6: #9fd132;
 
 
 //  $n3: #07533A;
@@ -24,12 +24,20 @@
 //  $n1: #F7A7BD;
 
 //artis: 
-$primary:       #07533A;
-$secondary:     #F7A7BD;
-$tertiary:      #234006;
+// $primary:       #07533A;
+// $secondary:     #F7A7BD;
+// $tertiary:      #234006;
+// $additional-font: #c3da9e;
+
+//artis try 2
 
 
-$additional-font: #c3da9e;
+$primary: #07533A;
+$secondary: #234006;
+$tertiary: #386a3c;
+$additional-font: #e97b9c;
+
+
 
 $tile-body-a-color: $tertiary;
 $tile-type-block-color: $tertiary;
