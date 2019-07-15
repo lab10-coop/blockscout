@@ -1,6 +1,6 @@
-#Blockscout manual install
+# Blockscout manual install
 
-###Erlang & Elixir:
+## Erlang & Elixir:
 
 `wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb`
 
@@ -62,7 +62,7 @@ To exit:
  `\q`
 
 
-###Node.js 10
+## Node.js 10
 
 `sudo apt-get install curl python-software-properties`
 
@@ -72,14 +72,14 @@ To exit:
 test:
 `nodejs --version`
 
-###Install GCC compiler
+## Install GCC compiler
 
 `sudo apt install automake libtool inotify-tools gcc`
 
 `gcc --version`
 
 
-###GMP installation:
+## GMP installation:
 
 `sudo apt-get update`
 
@@ -110,7 +110,7 @@ If all checked out, type:
 Note that gmp should be installed to /usr/local/...
 
 
-###Blockscout manual deploying:
+## Blockscout manual deploying:
 
 `git clone https://github.com/poanetwork/blockscout`
 
@@ -223,7 +223,7 @@ Now you can visit localhost:4000 from your browser.
 
 
 
-###File to import not found or unreadable: fa-brands #675:
+## File to import not found or unreadable: fa-brands #675:
 
 
 This error occurs for me with node v10.12.0 - the steps described above did not resolve it.
