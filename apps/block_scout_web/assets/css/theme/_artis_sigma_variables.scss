@@ -32,8 +32,8 @@
 //artis try 2
 
 
-$primary: #e97b9c;
-$secondary: #f1d6d3;
+$primary: #07533A;
+$secondary: #234006;
 $tertiary: #386a3c;
 $additional-font: #e97b9c;
 
@@ -63,7 +63,7 @@ $dashboard-stats-item-label-color: white;
 $dashboard-banner-chart-legend-value-color: $primary; // chart labels
 $dashboard-stats-item-value-color: white; // stat values
 
-$dashboard-stats-item-border-color: $secondary; // stat border
+$dashboard-stats-item-border-color: $tertiary; // stat border
 $dashboard-banner-gradient-start: $primary; // gradient begin
 $dashboard-banner-gradient-end: $primary; // gradient end
 $dashboard-banner-network-plain-container-background-color: $primary; // stats bg

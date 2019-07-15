@@ -53,6 +53,7 @@ See the [project documentation](https://poanetwork.github.io/blockscout) for ins
 - [Manual deployment](https://poanetwork.github.io/blockscout/#/manual-deployment)
 - [ENV variables](https://poanetwork.github.io/blockscout/#/env-variables)
 - [Configuration options](https://poanetwork.github.io/blockscout/#/dev-env)
+- [Manual deployment on Ubuntu](https://code.lab10.io/graz/04-artis/blockscout/blob/production-artis-sigma/Deployment.md)
 
 
 ## Acknowledgements
