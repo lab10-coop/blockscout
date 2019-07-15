@@ -63,10 +63,10 @@ $dashboard-stats-item-label-color: white;
 $dashboard-banner-chart-legend-value-color: $primary; // chart labels
 $dashboard-stats-item-value-color: white; // stat values
 
-$dashboard-stats-item-border-color: $primary; // stat border
-$dashboard-banner-gradient-start: $secondary; // gradient begin
-$dashboard-banner-gradient-end: $secondary; // gradient end
-$dashboard-banner-network-plain-container-background-color: $secondary; // stats bg
+$dashboard-stats-item-border-color: $tertiary; // stat border
+$dashboard-banner-gradient-start: $primary; // gradient begin
+$dashboard-banner-gradient-end: $primary; // gradient end
+$dashboard-banner-network-plain-container-background-color: $primary; // stats bg
 
 // navigation
 $header-icon-border-color-hover: $primary; // top border on hover
