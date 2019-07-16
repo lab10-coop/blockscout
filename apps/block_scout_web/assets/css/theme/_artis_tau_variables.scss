@@ -11,7 +11,7 @@
 
 $primary: #e97b9c;
 $secondary: #fcbfd1;
-$tertiary: #386a3c;
+$tertiary: #9fd132;
 $additional-font: #e97b9c;
 
 
@@ -35,25 +35,25 @@ $footer-social-icon-color: $secondary;
 // dashboard
 $dashboard-line-color-price: $tertiary; // price left border
 
-$dashboard-banner-chart-legend-label-color: $primary;
+$dashboard-banner-chart-legend-label-color: $secondary;
 $dashboard-stats-item-label-color: white;
 $dashboard-banner-chart-legend-value-color: $primary; // chart labels
 $dashboard-stats-item-value-color: white; // stat values
 
-$dashboard-stats-item-border-color: $tertiary; // stat border
+$dashboard-stats-item-border-color: $secondary; // stat border
 $dashboard-banner-gradient-start: $primary; // gradient begin
 $dashboard-banner-gradient-end: $primary; // gradient end
 $dashboard-banner-network-plain-container-background-color: $primary; // stats bg
 
 // navigation
-$header-icon-border-color-hover: $primary; // top border on hover
-$header-icon-color-hover: $primary; // nav icon on hover
+$header-icon-border-color-hover: $tertiary; // top  on hover
+$header-icon-color-hover: $tertiary; // nav icon on hover
 $dropdown-menu-item-hover-color: $primary !default;
 $dropdown-menu-item-hover-background: rgba($primary, .1) !default;
 
 // buttons
 $btn-line-bg: #fff; // button bg
-$btn-line-color: $primary; // button border and font color && hover bg color
+$btn-line-color: $tertiary; // button border and font color && hover bg color
 $btn-copy-color: $primary; // btn copy
 $btn-qr-color: $primary; // btn qr-code
 
