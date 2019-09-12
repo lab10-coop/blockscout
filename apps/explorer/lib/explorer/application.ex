@@ -37,33 +37,32 @@ defmodule Explorer.Application do
       Explorer.Repo,
       Supervisor.Spec.worker(SpandexDatadog.ApiServer, [datadog_opts()]),
       Supervisor.child_spec({Task.Supervisor, name: Explorer.MarketTaskSupervisor}, id: Explorer.MarketTaskSupervisor),
+      Supervisor.child_spec({Task.Supervisor, name: Explorer.GenesisDataTaskSupervisor}, id: GenesisDataTaskSupervisor),
       Supervisor.child_spec({Task.Supervisor, name: Explorer.TaskSupervisor}, id: Explorer.TaskSupervisor),
       Explorer.SmartContract.SolcDownloader,
       {Registry, keys: :duplicate, name: Registry.ChainEvents, id: Registry.ChainEvents},
       {Admin.Recovery, [[], [name: Admin.Recovery]]},
-      {TransactionCount, [[], []]},
-      {BlockCount, []},
-      con_cache_child_spec(Blocks.cache_name()),
-      con_cache_child_spec(NetVersion.cache_name()),
+      TransactionCount,
+      BlockCount,
+      Blocks,
+      NetVersion,
+      BlockNumber,
       con_cache_child_spec(MarketHistoryCache.cache_name()),
       con_cache_child_spec(RSK.cache_name(), ttl_check_interval: :timer.minutes(1), global_ttl: :timer.minutes(30)),
-      con_cache_child_spec(Transactions.cache_name())
+      Transactions
     ]
 
     children = base_children ++ configurable_children()
 
     opts = [strategy: :one_for_one, name: Explorer.Supervisor]
 
-    res = Supervisor.start_link(children, opts)
-
-    BlockNumber.setup()
-
-    res
+    Supervisor.start_link(children, opts)
   end
 
   defp configurable_children do
     [
       configure(Explorer.ExchangeRates),
+      configure(Explorer.ChainSpec.GenesisData),
       configure(Explorer.KnownTokens),
       configure(Explorer.Market.History.Cataloger),
       configure(Explorer.Counters.AddressesWithBalanceCounter),
