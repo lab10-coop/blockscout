@@ -1,6 +1,21 @@
 set -e
 set -u
 
+PS3='Prod or Testnet?'
+options=("blockscout_prod" "blockscout")
+
+select opt in "${options[@]}"
+do
+    case $opt in
+        "blockscout_prod")
+	    break
+            ;;
+        "blockscout")
+	    break
+            ;;
+    esac
+done
+
 read -p 'name of the database, username and password: (ex. tau1, sigma1)' var
 
 echo "This a script for updating a existing $var Blockscout instance."
@@ -11,7 +26,7 @@ systemctl stop $var-blockscout
 
 echo "stopping the service"
 
-cd /home/$var/blockscout
+cd /home/$var/$opt
 
 cat apps/explorer/config/dev.secret.exs
 

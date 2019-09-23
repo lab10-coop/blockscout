@@ -1,13 +1,27 @@
 set -e
 set -u
 
+PS3='Prod or Testnet?'
+options=("blockscout_prod" "blockscout")
 
-echo "This script resets the whole database of $var Blockscout."
+select opt in "${options[@]}"
+do
+    case $opt in
+        "blockscout_prod")
+	    break
+            ;;
+        "blockscout")
+	    break
+            ;;
+    esac
+done
 
 read -p 'name of the user where blockscout is in. (ex. tau1, sigma1)' var
 
+echo "This script resets the whole database of $var Blockscout."
+
 echo "changed into blockscout folder"
-cd /home/$var/blockscout
+cd /home/$var/$opt
 
 systemctl stop $var-blockscout
 
