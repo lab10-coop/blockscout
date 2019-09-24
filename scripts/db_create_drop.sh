@@ -23,7 +23,7 @@ do
 	    break
             ;;
 	"Change database ownership")
-	    sudo -u postgres psql -c "ALTER DATABASE postgres OWNER TO $var"
+	    sudo -u postgres psql -c "ALTER DATABASE $var OWNER TO $var"
 	    echo "database owner changed"
 	    exit
             ;;
