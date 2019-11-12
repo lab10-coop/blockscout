@@ -42,6 +42,7 @@ See the [project documentation](https://docs.blockscout.com/) for instructions:
 - [Manual deployment](https://docs.blockscout.com/for-developers/manual-deployment)
 - [ENV variables](https://docs.blockscout.com/for-developers/information-and-settings/env-variables)
 - [Configuration options](https://docs.blockscout.com/for-developers/configuration-options)
+- [Manual deployment on Ubuntu](https://code.lab10.io/graz/04-artis/blockscout/blob/production-artis-sigma/Deployment.md)
 
 
 ## Acknowledgements
