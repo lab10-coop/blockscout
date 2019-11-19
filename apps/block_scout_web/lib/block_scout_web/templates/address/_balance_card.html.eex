@@ -11,7 +11,6 @@
           <span
             data-wei-value="<%= if @address.fetched_coin_balance, do: @address.fetched_coin_balance.value %>"
           </span>
-          <small>(@ <span data-usd-unit-price="<%= @exchange_rate.usd_value %>"></span>/<%= gettext("Ether") %>)</small>
         </p>
       <% end %>
 
