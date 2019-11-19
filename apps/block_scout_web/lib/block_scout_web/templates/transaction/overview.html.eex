@@ -86,7 +86,7 @@
               <%= formatted_fee(@transaction, denomination: :ether) %>
 
               <%= if !empty_exchange_rate?(@exchange_rate) do %>
-                (<span data-wei-value=<%= fee(@transaction) %> data-usd-exchange-rate=<%= @exchange_rate.usd_value %>></span>)
+                (<span data-wei-value=<%= fee(@transaction) %> </span>)
               <% end %>
             </dd>
           </dl>
@@ -185,7 +185,6 @@
                 <%= if !empty_exchange_rate?(@exchange_rate) do %>
                   <p class="address-current-balance"
                     data-wei-value=<%= @transaction.value.value %>
-                    data-usd-exchange-rate=<%= @exchange_rate.usd_value %>>
                   </p>
                 <% end %>
               </div>
@@ -220,7 +219,6 @@
               <%= if !empty_exchange_rate?(@exchange_rate) do %>
                 <p class="address-current-balance"
                   data-wei-value=<%= @transaction.value.value %>
-                  data-usd-exchange-rate=<%= @exchange_rate.usd_value %>>
                 </p>
               <% end %>
             </div>
