@@ -5,6 +5,7 @@ defmodule Explorer.ChainSpec.Parity.Importer do
 
   require Logger
 
+  alias EthereumJSONRPC.Blocks
   alias Explorer.{Chain, Repo}
   alias Explorer.Chain.Block.{EmissionReward, Range}
   alias Explorer.Chain.Hash.Address, as: AddressHash
@@ -24,23 +25,42 @@ defmodule Explorer.ChainSpec.Parity.Importer do
     end
   end
 
-  def import_genesis_coin_balances(chain_spec) do
+  def import_genesis_accounts(chain_spec) do
     balance_params =
       chain_spec
-      |> genesis_coin_balances()
+      |> genesis_accounts()
       |> Stream.map(fn balance_map ->
         Map.put(balance_map, :block_number, 0)
       end)
       |> Enum.to_list()
 
-    address_params =
-      balance_params
-      |> Stream.map(fn %{address_hash: hash} ->
-        %{hash: hash}
+    json_rpc_named_arguments = Application.get_env(:explorer, :json_rpc_named_arguments)
+
+    {:ok, %Blocks{blocks_params: [%{timestamp: timestamp}]}} =
+      EthereumJSONRPC.fetch_blocks_by_range(1..1, json_rpc_named_arguments)
+
+    day = DateTime.to_date(timestamp)
+
+    balance_daily_params =
+      chain_spec
+      |> genesis_accounts()
+      |> Stream.map(fn balance_map ->
+        Map.put(balance_map, :day, day)
       end)
       |> Enum.to_list()
 
-    params = %{address_coin_balances: %{params: balance_params}, addresses: %{params: address_params}}
+    address_params =
+      balance_params
+      |> Stream.map(fn %{address_hash: hash} = map ->
+        Map.put(map, :hash, hash)
+      end)
+      |> Enum.to_list()
+
+    params = %{
+      address_coin_balances: %{params: balance_params},
+      address_coin_balances_daily: %{params: balance_daily_params},
+      addresses: %{params: address_params}
+    }
 
     Chain.import(params)
   end
@@ -60,8 +80,7 @@ defmodule Explorer.ChainSpec.Parity.Importer do
       from(
         e in EmissionReward,
         join: s in subquery(inner_delete_query),
-        # we join on reward because it's faster and we have to delete them all anyway
-        on: e.reward == s.reward
+        on: e.block_range == s.block_range
       )
 
     # Enforce EmissionReward ShareLocks order (see docs: sharelocks.md)
@@ -71,7 +90,7 @@ defmodule Explorer.ChainSpec.Parity.Importer do
     {_, nil} = Repo.insert_all(EmissionReward, ordered_rewards)
   end
 
-  def genesis_coin_balances(chain_spec) do
+  def genesis_accounts(chain_spec) do
     accounts = chain_spec["accounts"]
 
     if accounts do
@@ -102,11 +121,15 @@ defmodule Explorer.ChainSpec.Parity.Importer do
     |> Stream.filter(fn {_address, map} ->
       !is_nil(map["balance"])
     end)
-    |> Stream.map(fn {address, %{"balance" => value}} ->
-      {:ok, address_hash} = AddressHash.cast(address)
+    |> Stream.map(fn {address, %{"balance" => value} = params} ->
+      formatted_address = if String.starts_with?(address, "0x"), do: address, else: "0x" <> address
+      {:ok, address_hash} = AddressHash.cast(formatted_address)
       balance = parse_number(value)
 
-      %{address_hash: address_hash, value: balance}
+      nonce = parse_number(params["nonce"] || "0")
+      code = params["constructor"]
+
+      %{address_hash: address_hash, value: balance, nonce: nonce, contract_code: code}
     end)
     |> Enum.to_list()
   end
@@ -135,13 +158,19 @@ defmodule Explorer.ChainSpec.Parity.Importer do
     }
   end
 
-  defp parse_hex_numbers(rewards) do
+  defp parse_hex_numbers(rewards) when is_map(rewards) do
     Enum.map(rewards, fn {hex_block_number, hex_reward} ->
       block_number = parse_number(hex_block_number)
       {:ok, reward} = hex_reward |> parse_number() |> Wei.cast()
 
       {block_number, reward}
     end)
+  end
+
+  defp parse_hex_numbers(reward) do
+    {:ok, reward} = reward |> parse_number() |> Wei.cast()
+
+    [{0, reward}]
   end
 
   defp parse_number("0x" <> hex_number) do
