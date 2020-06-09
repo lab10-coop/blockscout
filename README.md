@@ -36,14 +36,13 @@ BlockScout supports a number of projects. Hosted instances include POA Network, 
 
 ## Getting Started
 
-See the [project documentation](https://docs.blockscout.com/) for instructions:
-- [Requirements](https://docs.blockscout.com/for-developers/information-and-settings/requirements)
-- [Ansible deployment](https://docs.blockscout.com/for-developers/ansible-deployment)
-- [Manual deployment](https://docs.blockscout.com/for-developers/manual-deployment)
-- [ENV variables](https://docs.blockscout.com/for-developers/information-and-settings/env-variables)
-- [Configuration options](https://docs.blockscout.com/for-developers/configuration-options)
+See the [project documentation](https://poanetwork.github.io/blockscout) for instructions:
+- [Requirements](https://poanetwork.github.io/blockscout/#/requirements)
+- [Ansible deployment](https://poanetwork.github.io/blockscout/#/ansible-deployment)
+- [Manual deployment](https://poanetwork.github.io/blockscout/#/manual-deployment)
+- [ENV variables](https://poanetwork.github.io/blockscout/#/env-variables)
+- [Configuration options](https://poanetwork.github.io/blockscout/#/dev-env)
 - [Manual deployment on Ubuntu](https://code.lab10.io/graz/04-artis/blockscout/blob/production-artis-sigma/Deployment.md)
-
 
 ## Acknowledgements
 

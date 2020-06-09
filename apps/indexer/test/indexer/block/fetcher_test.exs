@@ -79,6 +79,8 @@ defmodule Indexer.Block.FetcherTest do
         block_quantity = integer_to_quantity(block_number)
         miner_hash = "0x0000000000000000000000000000000000000000"
 
+        res = eth_block_number_fake_response(block_quantity)
+
         case Keyword.fetch!(json_rpc_named_arguments, :variant) do
           EthereumJSONRPC.Parity ->
             EthereumJSONRPC.Mox
@@ -136,6 +138,17 @@ defmodule Indexer.Block.FetcherTest do
                 %{id: id, method: "trace_replayBlockTransactions", params: [^block_quantity, ["trace"]]} ->
                   {:ok, [%{id: id, result: []}]}
               end
+            end)
+            |> expect(:json_rpc, fn [
+                                      %{
+                                        id: 0,
+                                        jsonrpc: "2.0",
+                                        method: "eth_getBlockByNumber",
+                                        params: [^block_quantity, true]
+                                      }
+                                    ],
+                                    _ ->
+              {:ok, [res]}
             end)
 
           EthereumJSONRPC.Geth ->
@@ -381,10 +394,78 @@ defmodule Indexer.Block.FetcherTest do
             end)
             # async requests need to be grouped in one expect because the order is non-deterministic while multiple expect
             # calls on the same name/arity are used in order
-            |> expect(:json_rpc, 5, fn json, _options ->
+            |> expect(:json_rpc, 11, fn json, _options ->
               [request] = json
 
               case request do
+                %{
+                  id: 0,
+                  jsonrpc: "2.0",
+                  method: "eth_getBlockByNumber",
+                  params: [^block_quantity, true]
+                } ->
+                  {:ok,
+                   [
+                     %{
+                       id: 0,
+                       jsonrpc: "2.0",
+                       result: %{
+                         "author" => "0xe8ddc5c7a2d2f0d7a9798459c0104fdf5e987aca",
+                         "difficulty" => "0xfffffffffffffffffffffffffffffffe",
+                         "extraData" => "0xd5830108048650617269747986312e32322e31826c69",
+                         "gasLimit" => "0x69fe20",
+                         "gasUsed" => "0xc512",
+                         "hash" => "0xf6b4b8c88df3ebd252ec476328334dc026cf66606a84fb769b3d3cbccc8471bd",
+                         "logsBloom" =>
+                           "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000200000000000000000000020000000000000000200000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                         "miner" => "0xe8ddc5c7a2d2f0d7a9798459c0104fdf5e987aca",
+                         "number" => "0x25",
+                         "parentHash" => "0xc37bbad7057945d1bf128c1ff009fb1ad632110bf6a000aac025a80f7766b66e",
+                         "receiptsRoot" => "0xd300311aab7dcc98c05ac3f1893629b2c9082c189a0a0c76f4f63e292ac419d5",
+                         "sealFields" => [
+                           "0x84120a71de",
+                           "0xb841fcdb570511ec61edda93849bb7c6b3232af60feb2ea74e4035f0143ab66dfdd00f67eb3eda1adddbb6b572db1e0abd39ce00f9b3ccacb9f47973279ff306fe5401"
+                         ],
+                         "sha3Uncles" => "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+                         "signature" =>
+                           "fcdb570511ec61edda93849bb7c6b3232af60feb2ea74e4035f0143ab66dfdd00f67eb3eda1adddbb6b572db1e0abd39ce00f9b3ccacb9f47973279ff306fe5401",
+                         "size" => "0x2cf",
+                         "stateRoot" => "0x2cd84079b0d0c267ed387e3895fd1c1dc21ff82717beb1132adac64276886e19",
+                         "step" => "302674398",
+                         "timestamp" => "0x5a343956",
+                         "totalDifficulty" => "0x24ffffffffffffffffffffffffedf78dfd",
+                         "transactions" => [
+                           %{
+                             "blockHash" => "0xf6b4b8c88df3ebd252ec476328334dc026cf66606a84fb769b3d3cbccc8471bd",
+                             "blockNumber" => "0x25",
+                             "chainId" => "0x4d",
+                             "condition" => nil,
+                             "creates" => nil,
+                             "from" => from_address_hash,
+                             "gas" => "0x47b760",
+                             "gasPrice" => "0x174876e800",
+                             "hash" => transaction_hash,
+                             "input" => "0x10855269000000000000000000000000862d67cb0773ee3f8ce7ea89b328ffea861ab3ef",
+                             "nonce" => "0x4",
+                             "publicKey" =>
+                               "0xe5d196ad4ceada719d9e592f7166d0c75700f6eab2e3c3de34ba751ea786527cb3f6eb96ad9fdfdb9989ff572df50f1c42ef800af9c5207a38b929aff969b5c9",
+                             "r" => "0xa7f8f45cce375bb7af8750416e1b03e0473f93c256da2285d1134fc97a700e01",
+                             "raw" =>
+                               "0xf88a0485174876e8008347b760948bf38d4764929064f2d4d3a56520a76ab3df415b80a410855269000000000000000000000000862d67cb0773ee3f8ce7ea89b328ffea861ab3ef81bea0a7f8f45cce375bb7af8750416e1b03e0473f93c256da2285d1134fc97a700e01a01f87a076f13824f4be8963e3dffd7300dae64d5f23c9a062af0c6ead347c135f",
+                             "s" => "0x1f87a076f13824f4be8963e3dffd7300dae64d5f23c9a062af0c6ead347c135f",
+                             "standardV" => "0x1",
+                             "to" => to_address_hash,
+                             "transactionIndex" => "0x0",
+                             "v" => "0xbe",
+                             "value" => "0x0"
+                           }
+                         ],
+                         "transactionsRoot" => "0x68e314a05495f390f9cd0c36267159522e5450d2adf254a74567b452e767bf34",
+                         "uncles" => []
+                       }
+                     }
+                   ]}
+
                 %{id: id, method: "eth_getBalance", params: [^to_address_hash, ^block_quantity]} ->
                   {:ok, [%{id: id, jsonrpc: "2.0", result: "0x1"}]}
 
@@ -485,8 +566,7 @@ defmodule Indexer.Block.FetcherTest do
                           bytes:
                             <<76, 188, 236, 37, 153, 153, 224, 115, 252, 79, 176, 224, 228, 166, 18, 66, 94, 61, 115,
                               57, 47, 162, 37, 255, 36, 96, 161, 238, 171, 66, 99, 10>>
-                        },
-                        internal_transactions_indexed_at: nil
+                        }
                       },
                       %Transaction{
                         block_number: block_number,
@@ -496,8 +576,7 @@ defmodule Indexer.Block.FetcherTest do
                           bytes:
                             <<240, 237, 34, 44, 16, 174, 248, 135, 4, 196, 15, 198, 34, 220, 218, 174, 13, 208, 242,
                               122, 154, 143, 4, 28, 171, 95, 190, 255, 254, 174, 75, 182>>
-                        },
-                        internal_transactions_indexed_at: nil
+                        }
                       }
                     ]
                   }} = Fetcher.fetch_and_import_range(block_fetcher, block_number..block_number)
@@ -589,8 +668,7 @@ defmodule Indexer.Block.FetcherTest do
                             bytes:
                               <<83, 189, 136, 72, 114, 222, 62, 72, 134, 146, 136, 27, 174, 236, 38, 46, 123, 149, 35,
                                 77, 57, 101, 36, 140, 57, 254, 153, 47, 255, 212, 51, 229>>
-                          },
-                          internal_transactions_indexed_at: nil
+                          }
                         }
                       ]
                     },
@@ -665,6 +743,22 @@ defmodule Indexer.Block.FetcherTest do
                }
 
              %{id: id, method: "trace_block"} ->
+               block_quantity = integer_to_quantity(block_number)
+               res = eth_block_number_fake_response(block_quantity)
+
+               EthereumJSONRPC.Mox
+               |> expect(:json_rpc, fn [
+                                         %{
+                                           id: 0,
+                                           jsonrpc: "2.0",
+                                           method: "eth_getBlockByNumber",
+                                           params: [^block_quantity, true]
+                                         }
+                                       ],
+                                       _ ->
+                 {:ok, [res]}
+               end)
+
                %{
                  id: id,
                  result: [
@@ -744,5 +838,41 @@ defmodule Indexer.Block.FetcherTest do
       counts = BufferedTask.debug_count(buffered_task)
       counts.buffer == 0 and counts.tasks == 0
     end)
+  end
+
+  defp eth_block_number_fake_response(block_quantity) do
+    %{
+      id: 0,
+      jsonrpc: "2.0",
+      result: %{
+        "author" => "0x0000000000000000000000000000000000000000",
+        "difficulty" => "0x20000",
+        "extraData" => "0x",
+        "gasLimit" => "0x663be0",
+        "gasUsed" => "0x0",
+        "hash" => "0x5b28c1bfd3a15230c9a46b399cd0f9a6920d432e85381cc6a140b06e8410112f",
+        "logsBloom" =>
+          "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "miner" => "0x0000000000000000000000000000000000000000",
+        "number" => block_quantity,
+        "parentHash" => "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "receiptsRoot" => "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+        "sealFields" => [
+          "0x80",
+          "0xb8410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "sha3Uncles" => "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+        "signature" =>
+          "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "size" => "0x215",
+        "stateRoot" => "0xfad4af258fd11939fae0c6c6eec9d340b1caac0b0196fd9a1bc3f489c5bf00b3",
+        "step" => "0",
+        "timestamp" => "0x0",
+        "totalDifficulty" => "0x20000",
+        "transactions" => [],
+        "transactionsRoot" => "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+        "uncles" => []
+      }
+    }
   end
 end
