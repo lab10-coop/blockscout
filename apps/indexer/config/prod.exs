@@ -2,10 +2,10 @@ use Mix.Config
 
 config :indexer, Indexer.Tracer, env: "production", disabled?: true
 
-config :logger, :indexer,
-  level: :info,
-  path: Path.absname("logs/prod/indexer.log"),
-  rotate: %{max_bytes: 52_428_800, keep: 19}
+#config :logger, :indexer,
+#  level: :info,
+#  path: Path.absname("logs/prod/indexer.log"),
+#  rotate: %{max_bytes: 52_428_800, keep: 19}
 
 config :logger, :indexer_token_balances,
   level: :debug,
